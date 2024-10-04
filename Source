@@ -1,0 +1,44 @@
+# Importing necessary libraries
+import numpy as np
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+# Load the breast cancer dataset
+data = load_breast_cancer()
+
+# Display the description of the dataset
+print(data.DESCR)
+
+# Extract features and target variable
+X = data.data
+y = data.target
+
+# Splitting the dataset into the Training set and Test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+# Training the Decision Tree model
+classifier = DecisionTreeClassifier(random_state=0)
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+# Evaluating the model
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+# Function to predict loan eligibility
+def predict_loan_eligibility(model, features):
+    prediction = model.predict([features])
+    if prediction == 1:
+        return "Eligible for loan"
+    else:
+        return "Not eligible for loan"
+
+# Example usage of the prediction function
+# Replace 'example_features' with an example of features for prediction
+example_features = X_test[0]  # Using the first test sample as an example
+prediction = predict_loan_eligibility(classifier, example_features)
+print("Prediction:", prediction)
